@@ -52,6 +52,7 @@ RUN \
   case ${TARGETPLATFORM} in \
     "linux/amd64") KOPIA_TARGET_OS=linux;KOPIA_TARGET_ARCH=x64; RCLONE_TARGET_OS=linux;RCLONE_TARGET_ARCH=amd64;  ;; \
     "linux/arm64") KOPIA_TARGET_OS=linux;KOPIA_TARGET_ARCH=arm64; RCLONE_TARGET_OS=linux;RCLONE_TARGET_ARCH=arm64;  ;; \
+    "linux/arm/v7") KOPIA_TARGET_OS=linux;KOPIA_TARGET_ARCH=arm; RCLONE_TARGET_OS=linux;RCLONE_TARGET_ARCH=arm-v7;  ;; \
                 *) echo "target platform not found!!";; \
   esac && \
   curl -sL "https://github.com/kopia/kopia/releases/download/v${KOPIA_RELEASE}/kopia-${KOPIA_RELEASE}-${KOPIA_TARGET_OS}-${KOPIA_TARGET_ARCH}.tar.gz" | tar -xz -C /tmp && \
