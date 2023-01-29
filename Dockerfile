@@ -55,7 +55,8 @@ RUN \
                 *) echo "target platform not found!!";; \
   esac && \
   curl -sL "https://github.com/kopia/kopia/releases/download/v${KOPIA_RELEASE}/kopia-${KOPIA_RELEASE}-${KOPIA_TARGET_OS}-${KOPIA_TARGET_ARCH}.tar.gz" | tar -xz -C /tmp && \
-  curl -sL "https://github.com/rclone/rclone/releases/download/v${RCLONE_RELEASE}/rclone-v${RCLONE_RELEASE}-${RCLONE_TARGET_OS}-${RCLONE_TARGET_ARCH}.zip" | unzip -d /tmp && \
+  curl -sL "https://github.com/rclone/rclone/releases/download/v${RCLONE_RELEASE}/rclone-v${RCLONE_RELEASE}-${RCLONE_TARGET_OS}-${RCLONE_TARGET_ARCH}.zip" -o /tmp/rclone.zip && 
+  unzip /tmp/rclone.zip -d /tmp && \
   cp /tmp/kopia-${KOPIA_RELEASE}-${KOPIA_TARGET_OS}-${KOPIA_TARGET_ARCH}/kopia /usr/bin && \
   cp /tmp/rclone-v${RCLONE_RELEASE}-${RCLONE_TARGET_OS}-${RCLONE_TARGET_ARCH}/rclone /usr/bin && \
   rm -rf /tmp/*
