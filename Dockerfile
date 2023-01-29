@@ -47,10 +47,11 @@ COPY /root /
 
 # add kopia and rclone
 RUN \
-  echo "*** install kopia & rclone ***" && \
+  echo "*** install kopia & rclone for ${TARGETPLATFORM} ***" && \
   case ${TARGETPLATFORM} in \
-    "linux/amd64")  KOPIA_TARGET_OS=linux;KOPIA_TARGET_ARCH=x64; RCLONE_TARGET_OS=linux;RCLONE_TARGET_ARCH=amd64;  ;; \
-    "linux/arm64")  KOPIA_TARGET_OS=linux;KOPIA_TARGET_ARCH=arm64; RCLONE_TARGET_OS=linux;RCLONE_TARGET_ARCH=arm64;  ;; \
+    "linux/amd64") KOPIA_TARGET_OS=linux;KOPIA_TARGET_ARCH=x64; RCLONE_TARGET_OS=linux;RCLONE_TARGET_ARCH=amd64;  ;; \
+    "linux/arm64") KOPIA_TARGET_OS=linux;KOPIA_TARGET_ARCH=arm64; RCLONE_TARGET_OS=linux;RCLONE_TARGET_ARCH=arm64;  ;; \
+                *) echo "target platform not found!!";; \
   esac && \
   curl -sL "https://github.com/kopia/kopia/releases/download/v${KOPIA_RELEASE}/kopia-${KOPIA_RELEASE}-${KOPIA_TARGET_OS}-${KOPIA_TARGET_ARCH}.tar.gz" | tar -xz -C /tmp && \
   curl -sL "https://github.com/rclone/rclone/releases/download/v${RCLONE_RELEASE}/rclone-v${RCLONE_RELEASE}-${RCLONE_TARGET_OS}-${RCLONE_TARGET_ARCH}.zip" | unzip -d /tmp && \
