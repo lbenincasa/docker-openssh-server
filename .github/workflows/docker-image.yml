@@ -67,6 +67,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: ${{ inputs.push }}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/mnt:${{ inputs.tags }}
