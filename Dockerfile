@@ -26,6 +26,7 @@ RUN \
     logrotate \
     nano \
     mc \
+    lsblk \
     netcat-openbsd \
     sudo && \
   echo "**** install openssh-server ****" && \
