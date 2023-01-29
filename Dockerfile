@@ -36,8 +36,8 @@ RUN \
 COPY /root /
 
 # add kopia and rclone
-ADD https://github.com/kopia/kopia/releases/download/v${KOPIA_RELEASE}/kopia-${KOPIA_RELEASE}-linux-arm64.tar.gz /tmp
-ADD https://github.com/rclone/rclone/releases/download/v${RCLONE_RELEASE}/rclone-v${RCLONE_RELEASE}-linux-arm64.zip /tmp
+ADD https://github.com/kopia/kopia/releases/download/v${KOPIA_RELEASE}/kopia-${KOPIA_RELEASE}-linux-x64.tar.gz /tmp
+ADD https://github.com/rclone/rclone/releases/download/v${RCLONE_RELEASE}/rclone-v${RCLONE_RELEASE}-linux-amd64.zip /tmp
 RUN \
   echo "*** install kopia & rclone ***" && \
   tar xfv /tmp/kopia-${KOPIA_RELEASE}-linux-x64.tar.gz -C /tmp && \
