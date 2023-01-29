@@ -4,10 +4,20 @@ FROM ghcr.io/linuxserver/baseimage-alpine:3.16
 ARG BUILD_DATE
 ARG VERSION
 ARG OPENSSH_RELEASE
+
+# Kopia
 ARG KOPIA_RELEASE=0.12.1
+ARG KOPIA_TARGET_OS
+ARG KOPIA_TARGET_ARCH
+
+# Rclone
 ARG RCLONE_RELEASE=1.61.1
+ARG RCLONE_TARGET_OS
+ARG RCLONE_TARGET_ARCH
+
+
 LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="aptalca"
+LABEL maintainer="beni"
 
 RUN \
   echo "**** install runtime packages ****" && \
@@ -36,15 +46,27 @@ RUN \
 COPY /root /
 
 # add kopia and rclone
-ADD https://github.com/kopia/kopia/releases/download/v${KOPIA_RELEASE}/kopia-${KOPIA_RELEASE}-linux-x64.tar.gz /tmp
-ADD https://github.com/rclone/rclone/releases/download/v${RCLONE_RELEASE}/rclone-v${RCLONE_RELEASE}-linux-amd64.zip /tmp
 RUN \
   echo "*** install kopia & rclone ***" && \
-  tar xfv /tmp/kopia-${KOPIA_RELEASE}-linux-x64.tar.gz -C /tmp && \
-  unzip   /tmp/rclone-v${RCLONE_RELEASE}-linux-amd64.zip -d /tmp && \
-  cp /tmp/kopia-${KOPIA_RELEASE}-linux-x64/kopia /usr/bin && \
-  cp /tmp/rclone-v${RCLONE_RELEASE}-linux-amd64/rclone /usr/bin && \
+  case ${TARGETPLATFORM} in \
+    "linux/amd64")  KOPIA_TARGET_OS=linux;KOPIA_TARGET_ARCH=x64; RCLONE_TARGET_OS=linux;RCLONE_TARGET_ARCH=amd64;  ;; \
+    "linux/arm64")  KOPIA_TARGET_OS=linux;KOPIA_TARGET_ARCH=arm64; RCLONE_TARGET_OS=linux;RCLONE_TARGET_ARCH=arm64;  ;; \
+  esac && \
+  curl -sL "https://github.com/kopia/kopia/releases/download/v${KOPIA_RELEASE}/kopia-${KOPIA_RELEASE}-${KOPIA_TARGET_OS}-${KOPIA_TARGET_ARCH}.tar.gz" | tar -xz -C /tmp && \
+  curl -sL "https://github.com/rclone/rclone/releases/download/v${RCLONE_RELEASE}/rclone-v${RCLONE_RELEASE}-${RCLONE_TARGET_OS}-${RCLONE_TARGET_ARCH}.zip" | unzip -d /tmp && \
+  cp /tmp/kopia-${KOPIA_RELEASE}-${KOPIA_TARGET_OS}-${KOPIA_TARGET_ARCH}/kopia /usr/bin && \
+  cp /tmp/rclone-v${RCLONE_RELEASE}-${RCLONE_TARGET_OS}-${RCLONE_TARGET_ARCH}/rclone /usr/bin && \
   rm -rf /tmp/*
+
+#ADD https://github.com/kopia/kopia/releases/download/v${KOPIA_RELEASE}/kopia-${KOPIA_RELEASE}-linux-x64.tar.gz /tmp
+#ADD https://github.com/rclone/rclone/releases/download/v${RCLONE_RELEASE}/rclone-v${RCLONE_RELEASE}-linux-amd64.zip /tmp
+#RUN \
+#  echo "*** install kopia & rclone ***" && \
+#  tar xfv /tmp/kopia-${KOPIA_RELEASE}-linux-x64.tar.gz -C /tmp && \
+#  unzip   /tmp/rclone-v${RCLONE_RELEASE}-linux-amd64.zip -d /tmp && \
+#  cp /tmp/kopia-${KOPIA_RELEASE}-linux-x64/kopia /usr/bin && \
+#  cp /tmp/rclone-v${RCLONE_RELEASE}-linux-amd64/rclone /usr/bin && \
+#  rm -rf /tmp/*
 
 EXPOSE 2222
 
