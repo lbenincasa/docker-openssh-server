@@ -27,6 +27,7 @@ RUN \
     nano \
     mc \
     lsblk \
+    rsync \
     netcat-openbsd \
     sudo && \
   echo "**** install openssh-server ****" && \
