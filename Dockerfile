@@ -28,6 +28,7 @@ RUN \
     mc \
     lsblk \
     rsync \
+    bridge-utils \
     netcat-openbsd \
     sudo && \
   echo "**** install openssh-server ****" && \
