@@ -28,6 +28,7 @@ RUN \
     mc \
     lsblk \
     rsync \
+    restic \
     bridge-utils \
     netcat-openbsd \
     sudo && \
