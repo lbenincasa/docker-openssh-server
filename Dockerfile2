@@ -1,10 +1,16 @@
-#docker buildx build --platform=linux/amd64,linux/arm64,linux/arm/v7 -t beni:0.0.8 .
+#esempio di build: 'docker buildx build --platform=linux/amd64,linux/arm64,linux/arm/v7 -t beni:0.0.8 .'
 #FROM --platform=$BUILDPLATFORM ghcr.io/linuxserver/baseimage-alpine:3.16
 FROM --platform=$BUILDPLATFORM ghcr.io/linuxserver/openssh-server:latest
 
+# automatic args from buildx
 ARG TARGETPLATFORM
 ARG BUILDPLATFORM
-RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
+ARG TARGETARCH
+ARG BUILDARCH
+ARG TARGETOS
+ARG BUILDOS
+
+RUN echo "I am running on $BUILDPLATFORM [os: $BUILDOS, arch: $BUILDARCH], building for $TARGETPLATFORM [os: $BUILDOS, arch: $BUILDARCH]"
 
 
 # set version label
@@ -24,6 +30,7 @@ RUN \
     restic \
     bridge-utils \
     nginx \
+    docker-cli \
     rclone && \
   echo "**** setup openssh environment ****" && \
   sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config 
