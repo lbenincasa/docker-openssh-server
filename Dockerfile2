@@ -1,0 +1,35 @@
+#docker buildx build --platform=linux/amd64,linux/arm64,linux/arm/v7 -t beni:0.0.8 .
+#FROM --platform=$BUILDPLATFORM ghcr.io/linuxserver/baseimage-alpine:3.16
+FROM --platform=$BUILDPLATFORM ghcr.io/linuxserver/openssh-server:latest
+
+ARG TARGETPLATFORM
+ARG BUILDPLATFORM
+RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
+
+
+# set version label
+ARG BUILD_DATE
+ARG VERSION
+ARG OPENSSH_RELEASE
+LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="beni"
+
+RUN \
+  echo "**** install runtime packages ****" && \
+  apk update && \
+  apk add --no-cache --upgrade \
+    mc \
+    lsblk \
+    rsync \
+    restic \
+    bridge-utils \
+    rclone && \
+  echo "**** setup openssh environment ****" && \
+  sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config 
+
+# add local files
+#COPY /root /
+
+EXPOSE 2222
+
+VOLUME /config
