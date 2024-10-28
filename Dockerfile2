@@ -23,6 +23,7 @@ RUN \
     rsync \
     restic \
     bridge-utils \
+    nginx \
     rclone && \
   echo "**** setup openssh environment ****" && \
   sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config 
