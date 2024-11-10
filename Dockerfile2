@@ -31,6 +31,8 @@ RUN \
     bridge-utils \
     nginx \
     docker-cli \
+    docker-cli-compose \
+    docker-cli-buildx \
     rclone && \
   echo "**** setup openssh environment ****" && \
   sed -i 's/AllowTcpForwarding no/AllowTcpForwarding yes/g' /etc/ssh/sshd_config 
